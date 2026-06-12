@@ -1,13 +1,20 @@
+import os
 import pickle
 import re
-import nltk                           
-nltk.download('stopwords')            
+import nltk
+
+nltk_data_dir = os.path.join(os.path.dirname(__file__), 'nltk_data')
+os.makedirs(nltk_data_dir, exist_ok=True)
+nltk.data.path.insert(0, nltk_data_dir)
+nltk.download('stopwords', download_dir=nltk_data_dir, quiet=True)
+
 from nltk.corpus import stopwords
 
-# Load models (matching YOUR file names)
-tfidf     = pickle.load(open('models/tfidf.pkl', 'rb'))
-cat_model = pickle.load(open('models/cat_model.pkl', 'rb'))
-pri_model = pickle.load(open('models/pri_model.pkl', 'rb'))
+BASE = os.path.dirname(os.path.abspath(__file__))
+
+tfidf     = pickle.load(open(os.path.join(BASE, 'models', 'tfidf.pkl'), 'rb'))
+cat_model = pickle.load(open(os.path.join(BASE, 'models', 'cat_model.pkl'), 'rb'))
+pri_model = pickle.load(open(os.path.join(BASE, 'models', 'pri_model.pkl'), 'rb'))
 
 stop_words = set(stopwords.words('english'))
 

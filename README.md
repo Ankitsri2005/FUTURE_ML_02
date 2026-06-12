@@ -1,6 +1,8 @@
 # 🎯 TicketIQ — Intelligent Support Triage System
 > Classify. Prioritize. Respond. Faster.
 
+🔴 Live Demo → [Coming Soon]
+
 ## Overview
 ML-powered support ticket classifier that automatically
 categorizes customer complaints and assigns priority levels.
