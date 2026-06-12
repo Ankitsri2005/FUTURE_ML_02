@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketIQ — Intelligent Support Triage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo">🎯 TicketIQ</div>
+        <div class="tagline">Classify. Prioritize. Respond. Faster.</div>
+    </div>
+    <nav>
+        <a href="/" class="active">Single Ticket</a>
+        <a href="/bulk">Bulk Analysis</a>
+    </nav>
+</header>
+
+<main>
+
+    <div class="card">
+        <h2>Analyze Support Ticket</h2>
+        <p class="subtitle">Paste any customer complaint below</p>
+
+        <form method="POST" action="/predict">
+            <textarea name="ticket" rows="6"
+                placeholder="e.g. Someone made unauthorized transactions on my credit card. I need this resolved immediately...">{{ ticket or '' }}</textarea>
+
+            {% if error %}
+                <p class="error">⚠ {{ error }}</p>
+            {% endif %}
+
+            <button type="submit">Analyze Ticket →</button>
+        </form>
+    </div>
+
+    {% if result %}
+    <div class="results-card">
+        <h2>Analysis Results</h2>
+
+        <div class="result-grid">
+
+            <div class="result-box">
+                <span class="label">Category</span>
+                <span class="value">{{ result.category }}</span>
+                <span class="confidence">{{ result.cat_confidence }}% confident</span>
+            </div>
+
+            <div class="result-box priority-{{ result.priority | lower }}">
+                <span class="label">Priority</span>
+                <span class="value">
+                    {% if result.priority == 'Critical' %} 🔴
+                    {% elif result.priority == 'High' %} 🟠
+                    {% elif result.priority == 'Medium' %} 🟡
+                    {% else %} 🟢
+                    {% endif %}
+                    {{ result.priority }}
+                </span>
+                <span class="confidence">{{ result.pri_confidence }}% confident</span>
+            </div>
+
+        </div>
+
+        <div class="response-box">
+            <h3>💬 Suggested Response</h3>
+            <p>{{ result.auto_response }}</p>
+        </div>
+
+    </div>
+    {% endif %}
+
+</main>
+
+<footer>
+    <p>TicketIQ — Built with Python · NLTK · Scikit-learn · Flask</p>
+</footer>
+
+</body>
+</html>

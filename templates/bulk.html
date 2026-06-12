@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TicketIQ — Bulk Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <div class="logo">🎯 TicketIQ</div>
+        <div class="tagline">Classify. Prioritize. Respond. Faster.</div>
+    </div>
+    <nav>
+        <a href="/">Single Ticket</a>
+        <a href="/bulk" class="active">Bulk Analysis</a>
+    </nav>
+</header>
+
+<main>
+
+    <div class="card">
+        <h2>Bulk Ticket Analysis</h2>
+        <p class="subtitle">Upload a CSV file with complaint or narrative column</p>
+
+        <form method="POST" action="/bulk" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".csv">
+            {% if error %}
+                <p class="error">⚠ {{ error }}</p>
+            {% endif %}
+            <button type="submit">Analyze All Tickets →</button>
+        </form>
+    </div>
+
+    {% if total %}
+    <div class="results-card">
+        <h2>Dashboard — {{ total }} Tickets Analyzed</h2>
+
+        <div class="dashboard-grid">
+
+            <div class="dash-box">
+                <h3>🚦 Priority Breakdown</h3>
+                {% for p, count in priority_counts.items() %}
+                <div class="dash-row priority-{{ p | lower }}">
+                    <span>{{ p }}</span>
+                    <span><b>{{ count }}</b>
+                        ({{ ((count / total) * 100) | round(1) }}%)
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="dash-box">
+                <h3>📂 Category Breakdown</h3>
+                {% for c, count in category_counts.items() %}
+                <div class="dash-row">
+                    <span>{{ c }}</span>
+                    <span><b>{{ count }}</b>
+                        ({{ ((count / total) * 100) | round(1) }}%)
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <div class="table-section">
+            <h3>Sample Results — First 20 Tickets</h3>
+            {{ table_html | safe }}
+        </div>
+
+    </div>
+    {% endif %}
+
+</main>
+
+<footer>
+    <p>TicketIQ — Built with Python · NLTK · Scikit-learn · Flask</p>
+</footer>
+
+</body>
+</html>
