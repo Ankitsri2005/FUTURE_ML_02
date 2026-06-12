@@ -1,7 +1,7 @@
 # 🎯 TicketIQ — Intelligent Support Triage System
 > Classify. Prioritize. Respond. Faster.
 
-🔴 Live Demo → [Coming Soon]
+🔴 Live Demo → https://ticket-prediction-6t9a.onrender.com
 
 ## Overview
 ML-powered support ticket classifier that automatically
